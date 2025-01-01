@@ -29,11 +29,6 @@ const TransactionModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (parseFloat(amount) <= 0) {
-      setError("Amount must be a positive number");
-      return;
-    }
-
     if (!category) {
       setError("Please select a category.");
       return;

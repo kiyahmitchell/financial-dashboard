@@ -77,13 +77,25 @@ const Transactions = ({
   };
 
   const sortedTransactions = [...localTransactions].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === "ascending" ? -1 : 1;
+    if (sortConfig.key === "date") {
+      const dateA = new Date(a[sortConfig.key]);
+      const dateB = new Date(b[sortConfig.key]);
+      if (dateA < dateB) {
+        return sortConfig.direction === "ascending" ? -1 : 1;
+      }
+      if (dateA > dateB) {
+        return sortConfig.direction === "ascending" ? 1 : -1;
+      }
+      return 0;
+    } else {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === "ascending" ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === "ascending" ? 1 : -1;
+      }
+      return 0;
     }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === "ascending" ? 1 : -1;
-    }
-    return 0;
   });
 
   return (
