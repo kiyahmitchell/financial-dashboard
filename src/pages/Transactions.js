@@ -12,6 +12,10 @@ const Transactions = ({
   const fileInputRef = useRef(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortConfig, setSortConfig] = useState({
+    key: "date",
+    direction: "ascending",
+  });
 
   useEffect(() => {
     setLocalTransactions(transactions);
@@ -29,7 +33,6 @@ const Transactions = ({
     const updatedTransactions = [...localTransactions, transaction];
     setLocalTransactions(updatedTransactions);
     setTransactions(updatedTransactions); // Update transactions in App.js
-    closeModal();
   };
 
   const formatDate = (dateString) => {
@@ -65,6 +68,24 @@ const Transactions = ({
     fileInputRef.current.click();
   };
 
+  const handleSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedTransactions = [...localTransactions].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === "ascending" ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === "ascending" ? 1 : -1;
+    }
+    return 0;
+  });
+
   return (
     <div className="transactions-container">
       <h2 className="page-title">Transactions</h2>
@@ -96,20 +117,39 @@ const Transactions = ({
 
       {/* Transaction Log */}
       <div className="transaction-log">
-        <h3 className="log-heading">Transaction Log</h3>
-        {localTransactions.length > 0 ? (
+        {sortedTransactions.length > 0 ? (
           <table className="transaction-table">
             <thead>
               <tr className="table-header-row">
-                <th className="table-header date-column">Date</th>
-                <th className="table-header">Amount</th>
-                <th className="table-header">Category</th>
-                <th className="table-header">Subcategory</th>
-                <th className="table-header">Notes</th>
+                <th
+                  className="table-header date-column"
+                  onClick={() => handleSort("date")}>
+                  Date
+                </th>
+                <th
+                  className="table-header"
+                  onClick={() => handleSort("amount")}>
+                  Amount
+                </th>
+                <th
+                  className="table-header"
+                  onClick={() => handleSort("category")}>
+                  Category
+                </th>
+                <th
+                  className="table-header"
+                  onClick={() => handleSort("subcategory")}>
+                  Subcategory
+                </th>
+                <th
+                  className="table-header"
+                  onClick={() => handleSort("notes")}>
+                  Notes
+                </th>
               </tr>
             </thead>
             <tbody>
-              {localTransactions.map((transaction, index) => (
+              {sortedTransactions.map((transaction, index) => (
                 <tr key={index}>
                   <td className="table-cell">{formatDate(transaction.date)}</td>
                   <td className="table-cell">

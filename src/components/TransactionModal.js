@@ -17,7 +17,13 @@ const TransactionModal = ({
   const [notes, setNotes] = useState("");
   const [error, setError] = useState("");
 
-  const hardcodedCategories = ["Income", "Expenses", "Debt", "Savings", "Bills"];
+  const hardcodedCategories = [
+    "Income",
+    "Expenses",
+    "Debt",
+    "Savings",
+    "Bills",
+  ];
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [newCategory, setNewCategory] = useState("");
 
@@ -86,110 +92,101 @@ const TransactionModal = ({
       isOpen={isOpen}
       onRequestClose={closeModal}
       className="transaction-modal"
-      overlayClassName="transaction-modal-overlay"
-    >
+      overlayClassName="transaction-modal-overlay">
       <h2 className="modal-title">Add New Transaction</h2>
       <form onSubmit={handleSubmit} className="modal-form">
         {error && <p className="error-message">{error}</p>}
-
-        <label>
-          Date:
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-        </label>
-
-        <label>
-          Amount: ({settings.currency.symbol}):
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            required
-            min="0"
-          />
-        </label>
-
-        <label>
-          Category:
-          {isAddingCategory ? (
-            <div>
-              <input
-                type="text"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                placeholder="Enter new category"
-              />
-              <button
-                type="button"
-                onClick={handleAddCategory}
-                className="add-category-button"
-              >
-                Add
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsAddingCategory(false)}
-                className="cancel-add-category-button"
-              >
-                Cancel
-              </button>
-            </div>
-          ) : (
-            <select
-              value={category}
-              onChange={(e) => {
-                if (e.target.value === "add-new-category") {
-                  setIsAddingCategory(true);
-                } else {
-                  setCategory(e.target.value);
-                }
-              }}
+        <div className="modal-input-row">
+          <label>
+            Date:
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
               required
-            >
-              <option value="">Select Category</option>
-              {hardcodedCategories.map((cat, index) => (
-                <option key={index} value={cat}>
-                  {cat}
+            />
+          </label>
+
+          <label>
+            Amount: ({settings.currency.symbol}):
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+              min="0"
+              step="0.01"
+            />
+          </label>
+        </div>
+        <div className="modal-input-row">
+          <label>
+            Category:
+            {isAddingCategory ? (
+              <div>
+                <input
+                  type="text"
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  placeholder="Enter new category"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddCategory}
+                  className="add-category-button">
+                  Add
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAddingCategory(false)}
+                  className="cancel-add-category-button">
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <select
+                value={category}
+                onChange={(e) => {
+                  if (e.target.value === "add-new-category") {
+                    setIsAddingCategory(true);
+                  } else {
+                    setCategory(e.target.value);
+                  }
+                }}
+                required>
+                <option value="">Select Category</option>
+                {hardcodedCategories.map((cat, index) => (
+                  <option key={index} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+                {settings.categories.map((cat, index) => (
+                  <option key={index + hardcodedCategories.length} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+                <option value="add-new-category">+ Add New Category</option>
+              </select>
+            )}
+          </label>
+
+          <label>
+            Subcategory:
+            <select
+              value={subcategory}
+              onChange={(e) => setSubcategory(e.target.value)}>
+              <option value="">Select Subcategory</option>
+              {settings.subcategories.map((sub, index) => (
+                <option key={index} value={sub}>
+                  {sub}
                 </option>
               ))}
-              {settings.categories.map((cat, index) => (
-                <option
-                  key={index + hardcodedCategories.length}
-                  value={cat}
-                >
-                  {cat}
-                </option>
-              ))}
-              <option value="add-new-category">+ Add New Category</option>
             </select>
-          )}
-        </label>
-
-        <label>
-          Subcategory:
-          <select
-            value={subcategory}
-            onChange={(e) => setSubcategory(e.target.value)}
-          >
-            <option value="">Select Subcategory</option>
-            {settings.subcategories.map((sub, index) => (
-              <option key={index} value={sub}>
-                {sub}
-              </option>
-            ))}
-          </select>
-        </label>
-
+          </label>
+        </div>
         <label>
           Notes:
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-          />
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
         </label>
 
         <button type="submit">Add Transaction</button>
