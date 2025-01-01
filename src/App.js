@@ -15,7 +15,14 @@ const App = () => {
     subcategories: [],
   });
 
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState(() => {
+    const savedTransactions = localStorage.getItem("transactions");
+    return savedTransactions ? JSON.parse(savedTransactions) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  }, [transactions]);
 
   return (
     <ThemeProvider>
@@ -34,7 +41,7 @@ const App = () => {
                   <Transactions
                     settings={settings}
                     updateSettings={setSettings}
-                    initialTransactions={transactions}
+                    transactions={transactions} // Pass transactions to Transactions component
                     setTransactions={setTransactions} // Pass setTransactions to update transactions
                   />
                 }
