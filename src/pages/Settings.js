@@ -24,13 +24,6 @@ const Settings = ({ settings, setSettings }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      toggleTheme(savedTheme);
-    }
-  }, [toggleTheme]);
-
   const handleProfileSave = () => {
     // Save profile details
     console.log("Profile saved successfully!");
@@ -40,7 +33,6 @@ const Settings = ({ settings, setSettings }) => {
 
   const handleThemeToggle = (themeKey) => {
     toggleTheme(themeKey);
-    localStorage.setItem("theme", themeKey);
   };
 
   const currencies = [
@@ -147,9 +139,7 @@ const Settings = ({ settings, setSettings }) => {
           <p>Current Theme: {themes[theme]}</p>
           <div>
             {Object.entries(themes).map(([themeKey, themeName]) => (
-              <button
-                key={themeKey}
-                onClick={() => handleThemeToggle(themeKey)}>
+              <button key={themeKey} onClick={() => toggleTheme(themeKey)}>
                 {themeName}
               </button>
             ))}
