@@ -31,10 +31,6 @@ const Settings = ({ settings, setSettings }) => {
     setTimeout(() => setSuccess(""), 3000); // Clear success message after 3 seconds
   };
 
-  const handleThemeToggle = (themeKey) => {
-    toggleTheme(themeKey);
-  };
-
   const currencies = [
     { code: "USD", symbol: "$", name: "US Dollar" },
     { code: "EUR", symbol: "€", name: "Euro" },
