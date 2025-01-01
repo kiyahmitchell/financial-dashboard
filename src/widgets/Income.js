@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  format,
   startOfMonth,
   startOfWeek,
   startOfYear,
@@ -31,6 +30,9 @@ const Income = ({ transactions }) => {
         break;
     }
 
+    console.log("Date Range:", dateRange);
+    console.log("Start Date:", startDate);
+
     const filtered = transactions.filter((transaction) => {
       const transactionDate = new Date(transaction.date);
       return (
@@ -40,6 +42,8 @@ const Income = ({ transactions }) => {
       );
     });
 
+    console.log("Filtered Transactions:", filtered); // Debugging line
+
     setFilteredTransactions(filtered);
   }, [dateRange, transactions]);
 
@@ -48,8 +52,10 @@ const Income = ({ transactions }) => {
     0
   );
 
+  console.log("Total Income:", totalIncome); // Debugging line
+
   return (
-    <div className="widget">
+    <div className="widget small-widget">
       <div className="widget-header">
         <h3>Income</h3>
         <select
