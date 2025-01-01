@@ -17,19 +17,6 @@ const App = () => {
 
   const [transactions, setTransactions] = useState([]);
 
-  // Load transactions from localStorage when the app initializes
-  useEffect(() => {
-    const storedTransactions = localStorage.getItem("transactions");
-    if (storedTransactions) {
-      setTransactions(JSON.parse(storedTransactions));
-    }
-  }, []);
-
-  // Save transactions to localStorage whenever they are updated
-  useEffect(() => {
-    localStorage.setItem("transactions", JSON.stringify(transactions));
-  }, [transactions]);
-
   return (
     <ThemeProvider>
       <Router>
